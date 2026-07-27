@@ -5,7 +5,7 @@
 package com.joysistvi.recordingapp.repository;
 
 import com.joysistvi.recordingapp.config.dbconnection;
-import com.joysistvi.recordingapp.config.model.Song;
+import com.joysistvi.recordingapp.model.Song;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,7 @@ public class SongRepoImpl implements SongRepo {
 
         List<Song> songs = new ArrayList<>();
 
-        String sql = "SELECT * FROM songs WHERE archived = 0";
+        String sql = "SELECT * FROM songs";
 
         try (
                 Connection conn = db.connect();
@@ -35,8 +35,8 @@ public class SongRepoImpl implements SongRepo {
                 Song song = new Song(
                         rs.getInt("song_id"),
                         rs.getString("song_title"),
-                        rs.getString("song_genre"),
                         rs.getString("song_length"),
+                        rs.getString("song_genre"),                     
                         rs.getInt("album_id")
                 );
 
@@ -73,7 +73,6 @@ public class SongRepoImpl implements SongRepo {
         return false;
     }
 
-    @Override
     public boolean updateSong(Song song) {
 
         String query = "UPDATE songs SET song_title=?, song_genre=?, song_length=?, album_id=? WHERE song_id=?";
@@ -97,7 +96,6 @@ public class SongRepoImpl implements SongRepo {
         return false;
     }
 
-    @Override
     public boolean deleteSong(int id) {
 
         String query = "DELETE FROM songs WHERE song_id=?";
@@ -117,7 +115,6 @@ public class SongRepoImpl implements SongRepo {
         return false;
     }
 
-    @Override
     public boolean archiveSong(int id) {
 
         String query = "UPDATE songs SET archived = 1 WHERE song_id=?";
@@ -137,7 +134,6 @@ public class SongRepoImpl implements SongRepo {
         return false;
     }
 
-    @Override
     public boolean restoreSong(int id) {
 
         String query = "UPDATE songs SET archived = 0 WHERE song_id=?";
@@ -154,6 +150,44 @@ public class SongRepoImpl implements SongRepo {
             e.printStackTrace();
         }
 
+        return false;
+    }
+    
+    public Song checkSongId(int id) {
+        String query = "SELECT song_id, song_title,song_length,song_genre,album_id FROM songs WHERE song_id = ?";
+
+        try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
+
+            prep.setInt(1, id);
+            
+            ResultSet result = prep.executeQuery();
+
+            if (result.next()) {
+
+            return new Song(
+                    result.getInt("song_id"),
+                    result.getString("song_title"),
+                    result.getString("song_length"),
+                    result.getString("song_genre"),
+                    result.getInt("album_id")
+            );
+        }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+     public boolean TruncateSong() {
+        String query = "TRUNCATE TABLE songs";
+
+        try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
+            prep.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

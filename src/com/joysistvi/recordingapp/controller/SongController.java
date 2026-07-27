@@ -5,7 +5,7 @@
  */
 package com.joysistvi.recordingapp.controller;
 
-import com.joysistvi.recordingapp.config.model.Song;
+import com.joysistvi.recordingapp.model.Song;
 import com.joysistvi.recordingapp.service.SongService;
 import java.util.List;
 
@@ -39,5 +39,13 @@ public class SongController {
 
     public boolean restoreSong(int id) {
         return songService.restoreSong(id);
+    }
+
+    public Song checkSongId(int id) {
+        return songService.checkSongId(id);
+    }
+    
+    public boolean TruncateSong() {
+        return songService.TruncateSong();
     }
 }

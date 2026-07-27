@@ -5,7 +5,7 @@
 package com.joysistvi.recordingapp.view;
 
 import com.joysistvi.recordingapp.controller.UserController;
-import com.joysistvi.recordingapp.model.User;   
+import com.joysistvi.recordingapp.model.User;
 import java.util.Scanner;
 
 public class RegisterView {
@@ -19,20 +19,40 @@ public class RegisterView {
     }
 
     public void register() {
-        
+
         System.out.println("\n===== REGISTER =====");
-        System.out.print("Username: ");
-        String username = scanner.nextLine();
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
-        
-        User user = new User(username, password);
+        String email;
+        String password;
+
+        while (true) {
+            System.out.print("Email: ");
+            email = scanner.nextLine();
+
+            if (email.contains("@") && email.contains(".")) {
+                break;
+            } else {
+                System.out.println("Invalid email format. Please try again.");
+            }
+        }
+
+        while (true) {
+            System.out.print("Password: ");
+            password = scanner.nextLine();
+
+            if (password.length() >= 8) {
+                break;
+            } else {
+                System.out.println("Password must be at least 8 characters long.");
+            }
+        }
+
+        User user = new User(email, password);
         boolean success = userController.register(user);
 
         if (success) {
             System.out.println("Registration successful!\n");
         } else {
-            System.out.println("Registration failed. Username may already exist.\n");
+            System.out.println("Registration failed. Email may already exist.\n");
         }
     }
 }

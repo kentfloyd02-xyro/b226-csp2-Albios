@@ -4,7 +4,7 @@
  */
 package com.joysistvi.recordingapp.service;
 
-import com.joysistvi.recordingapp.config.model.Song;
+import com.joysistvi.recordingapp.model.Song;
 import com.joysistvi.recordingapp.repository.SongRepo;
 import com.joysistvi.recordingapp.repository.SongRepoImpl;
 import java.util.List;
@@ -16,22 +16,36 @@ public class SongService {
     public SongService() {
         songRepo = new SongRepoImpl();
     }
+
     public List<Song> getAllSongs() {
         return songRepo.getAllSongs();
     }
+
     public boolean createSong(Song song) {
         return songRepo.createSong(song);
     }
+
     public boolean updateSong(Song song) {
         return songRepo.updateSong(song);
     }
+
     public boolean deleteSong(int id) {
         return songRepo.deleteSong(id);
     }
+
     public boolean archiveSong(int id) {
         return songRepo.archiveSong(id);
     }
+
     public boolean restoreSong(int id) {
         return songRepo.restoreSong(id);
+    }
+
+    public Song checkSongId(int id) {
+        return songRepo.checkSongId(id);
+    }
+    
+    public boolean TruncateSong(){
+        return songRepo.TruncateSong();
     }
 }

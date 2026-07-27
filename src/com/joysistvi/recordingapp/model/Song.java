@@ -2,10 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.joysistvi.recordingapp.config.model;
+package com.joysistvi.recordingapp.model;
 
+/**
+ *
+ * @author ktagl
+ */
 public class Song {
-
     // private fields
     private int id;
     private String title;
@@ -23,7 +26,6 @@ public class Song {
         this.length = length;
         this.genre = genre;
         this.album_id = album_id;
-
     }
 
     public Song(String title, String length, String genre, int album_id) {
@@ -81,5 +83,4 @@ public class Song {
     public void setAlbum_id(int album_id) {
         this.album_id = album_id;
     }
-
 }
