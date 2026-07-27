@@ -10,10 +10,10 @@ package com.joysistvi.recordingapp.model;
  */
 public class Playlist {
     private int id;
-    private int created_at;
+    private String created_at;
     private int song_id;
 
-    public Playlist(int id, int created_at, int song_id) {
+    public Playlist(String created_at, int id) {
         this.id = id;
         this.created_at = created_at;
         this.song_id = song_id;
@@ -27,11 +27,11 @@ public class Playlist {
         this.id = id;
     }
 
-    public int getCreated_at() {
+    public String  getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(int created_at) {
+    public void setCreated_at(String  created_at) {
         this.created_at = created_at;
     }
 

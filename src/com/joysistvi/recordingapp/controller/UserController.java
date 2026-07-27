@@ -18,4 +18,5 @@ public class UserController {
     public boolean register(User user) {
         return service.register(user);
     }
+    
 }

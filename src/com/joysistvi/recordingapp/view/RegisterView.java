@@ -23,6 +23,7 @@ public class RegisterView {
         System.out.println("\n===== REGISTER =====");
         String email;
         String password;
+        String role = null;
 
         while (true) {
             System.out.print("Email: ");
@@ -46,7 +47,19 @@ public class RegisterView {
             }
         }
 
-        User user = new User(email, password);
+        while (true) {
+            System.out.println("ADMIN || USER");
+            System.out.print("Role: ");
+            role = scanner.nextLine();
+
+            if (role.equalsIgnoreCase("ADMIN") || role.equalsIgnoreCase("USER")) {
+                break;
+            } else {
+                System.out.println("Invalid role. Please enter ADMIN or USER.");
+            }
+        }
+
+        User user = new User(email, password, role);
         boolean success = userController.register(user);
 
         if (success) {

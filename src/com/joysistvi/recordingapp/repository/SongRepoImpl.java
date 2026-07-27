@@ -39,8 +39,9 @@ public class SongRepoImpl implements SongRepo {
                         rs.getString("song_genre"),                     
                         rs.getInt("album_id")
                 );
-
+                
                 songs.add(song);
+                
             }
 
         } catch (Exception e) {
@@ -49,7 +50,7 @@ public class SongRepoImpl implements SongRepo {
 
         return songs;
     }
-
+    
     @Override
     public boolean createSong(Song song) {
 
@@ -72,7 +73,8 @@ public class SongRepoImpl implements SongRepo {
 
         return false;
     }
-
+    
+    @Override
     public boolean updateSong(Song song) {
 
         String query = "UPDATE songs SET song_title=?, song_genre=?, song_length=?, album_id=? WHERE song_id=?";
@@ -96,6 +98,7 @@ public class SongRepoImpl implements SongRepo {
         return false;
     }
 
+    @Override
     public boolean deleteSong(int id) {
 
         String query = "DELETE FROM songs WHERE song_id=?";
@@ -115,6 +118,7 @@ public class SongRepoImpl implements SongRepo {
         return false;
     }
 
+    @Override
     public boolean archiveSong(int id) {
 
         String query = "UPDATE songs SET archived = 1 WHERE song_id=?";
@@ -134,6 +138,7 @@ public class SongRepoImpl implements SongRepo {
         return false;
     }
 
+    @Override
     public boolean restoreSong(int id) {
 
         String query = "UPDATE songs SET archived = 0 WHERE song_id=?";
@@ -153,6 +158,7 @@ public class SongRepoImpl implements SongRepo {
         return false;
     }
     
+    @Override
     public Song checkSongId(int id) {
         String query = "SELECT song_id, song_title,song_length,song_genre,album_id FROM songs WHERE song_id = ?";
 
@@ -179,7 +185,8 @@ public class SongRepoImpl implements SongRepo {
         return null;
     }
     
-     public boolean TruncateSong() {
+    @Override
+    public boolean TruncateSong() {
         String query = "TRUNCATE TABLE songs";
 
         try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {

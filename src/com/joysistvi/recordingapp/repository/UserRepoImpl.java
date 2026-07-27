@@ -19,14 +19,15 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public boolean register(User user) {
 
-        String query = "INSERT INTO users (username, password) VALUES(?, ?)";
+        String query = "INSERT INTO users (username, password, role) VALUES(?, ?, ?)";
 
         try (
                 Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setString(1, user.getUsername());
             prep.setString(2, user.getPassword());
-
+            prep.setString(3, user.getRole());
+            
             return prep.executeUpdate() > 0;
 
         } catch (Exception e) {
@@ -53,7 +54,8 @@ public class UserRepoImpl implements UserRepo {
 
                 return new User(
                         rs.getString("username"),
-                        rs.getString("password")
+                        rs.getString("password"),
+                        rs.getString("role")
                 );
             }
 
