@@ -19,7 +19,7 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public boolean register(User user) {
 
-        String query = "INSERT INTO accounts (username, password) VALUES(?, ?)";
+        String query = "INSERT INTO users (username, password) VALUES(?, ?)";
 
         try (
                 Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
@@ -39,7 +39,7 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public User login(String username, String password) {
 
-        String query = "SELECT * FROM accounts WHERE username = ? AND password = ?";
+        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
 
         try (
                 Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
