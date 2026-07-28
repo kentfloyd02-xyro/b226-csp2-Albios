@@ -45,4 +45,16 @@ public class SongController {
         return songService.checkSongId(id);
     }
     
+    public List<Song> searchSong(String keyword){
+        return songService.searchSong(keyword);
+    }
+    
+    public List<Song> getArchivedSongs() {
+        return songService.getArchivedSongs();
+    }
+    
+    public Song checkArchivedSongId(int id){
+        return songService.checkArchivedSongId(id);
+    }
+    
 }

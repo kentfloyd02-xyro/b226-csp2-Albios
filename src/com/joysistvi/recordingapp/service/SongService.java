@@ -44,5 +44,16 @@ public class SongService {
     public Song checkSongId(int id) {
         return songRepo.checkSongId(id);
     }
-    
+
+    public List<Song> searchSong(String keyword) {
+        return songRepo.searchSong(keyword);
+    }
+
+    public List<Song> getArchivedSongs() {
+        return songRepo.getArchivedSongs();
+    }
+
+    public Song checkArchivedSongId(int id) {
+        return songRepo.checkArchivedSongId(id);
+    }
 }

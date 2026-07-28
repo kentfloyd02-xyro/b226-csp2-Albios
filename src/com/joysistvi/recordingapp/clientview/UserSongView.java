@@ -7,17 +7,18 @@ package com.joysistvi.recordingapp.clientview;
 import com.joysistvi.recordingapp.controller.SongController;
 import com.joysistvi.recordingapp.model.Song;
 import static com.joysistvi.recordingapp.utils.Scan.scanner;
+import java.util.List;
 
 /**
  *
  * @author ktagl
  */
 public class UserSongView {
-    
+
     private final SongController songController;
-    
-    public UserSongView(SongController songController){
-        this.songController = songController ;
+
+    public UserSongView(SongController songController) {
+        this.songController = songController;
     }
 
     public void dashboard() {
@@ -25,7 +26,8 @@ public class UserSongView {
             System.out.println("=== VIEW ===");
             System.out.println("1. VIEW ALL SONG");
             System.out.println("2. VIEW SPECIFIC COLUMN SONG");
-            System.out.println("3. BACK");
+            System.out.println("3. SEARCH SONG");
+            System.out.println("4. BACK");
             System.out.print("Choose an option: ");
 
             if (!scanner.hasNextInt()) {
@@ -105,6 +107,53 @@ public class UserSongView {
                     break;
 
                 case 3:
+
+                    System.out.println("\n=== SEARCH SONG ===");
+
+                    System.out.print("Enter Song Title: ");
+                    String keyword = scanner.nextLine().trim();
+
+                    if (keyword.isEmpty()) {
+                        System.out.println("Search keyword cannot be empty.");
+                        break;
+                    }
+
+                    List<Song> searchResults = songController.searchSong(keyword);
+
+                    if (searchResults.isEmpty()) {
+
+                        System.out.println("No songs found.");
+
+                    } else {
+
+                        System.out.println("\n=== SEARCH RESULTS ===");
+
+                        System.out.printf(
+                                "%-5s %-30s %-15s %-10s%n",
+                                "ID",
+                                "Title",
+                                "Genre",
+                                "Length"
+                        );
+
+                        System.out.println(
+                                "------------------------------------------------------------"
+                        );
+
+                        for (Song searchSong : searchResults) {
+
+                            System.out.printf(
+                                    "%-5d %-30s %-15s %-10s%n",
+                                    searchSong.getId(),
+                                    searchSong.getTitle(),
+                                    searchSong.getGenre(),
+                                    searchSong.getLength()
+                            );
+                        }
+                    }
+
+                    break;
+                case 4:
                     return;
 
                 default:

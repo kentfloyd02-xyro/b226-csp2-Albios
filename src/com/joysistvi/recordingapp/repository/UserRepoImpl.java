@@ -71,30 +71,36 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public User login(String username, String password) {
 
-        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+    String query = "SELECT * FROM users WHERE username = ?";
 
-        try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
+    try (Connection conn = db.connect();PreparedStatement prep = conn.prepareStatement(query)) {
 
-            prep.setString(1, username);
-            prep.setString(2, password);
+        prep.setString(1, username);
 
-            ResultSet rs = prep.executeQuery();
+        try (ResultSet rs = prep.executeQuery()) {
 
             if (rs.next()) {
 
-                return new User(
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("role")
-                );
+                String hashedPassword = rs.getString("password");
+
+                if (BCrypt.checkpw(password, hashedPassword)) {
+
+                    return new User(
+                            rs.getString("username"),
+                            hashedPassword,
+                            rs.getString("role")
+                    );
+                }
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
-        return null;
+    } catch (SQLException e) {
+        System.out.println("Login Error: " + e.getMessage());
     }
+
+    return null;
+}
 
     public boolean updateUser(User user) {
 
