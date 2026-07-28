@@ -16,8 +16,8 @@ public class UserController {
         return service.login(username, password);
     }
 
-    public boolean register(User user) {
-        return service.register(user);
+    public boolean register(String username, String password, String role) {
+        return service.register(username, password, role);
     }
 
     public List<User> getAllUser() {
@@ -34,5 +34,9 @@ public class UserController {
 
     public boolean deleteUser(int id) {
         return service.deleteUser(id);
+    }
+    
+    public User checkUsername(String username){
+        return service.checkUsername(username);
     }
 }

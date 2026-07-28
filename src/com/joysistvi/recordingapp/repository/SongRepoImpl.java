@@ -7,10 +7,8 @@ package com.joysistvi.recordingapp.repository;
 import com.joysistvi.recordingapp.config.dbconnection;
 import com.joysistvi.recordingapp.model.Song;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class SongRepoImpl implements SongRepo {
                 songs.add(song);
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -77,7 +75,7 @@ public class SongRepoImpl implements SongRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -100,7 +98,7 @@ public class SongRepoImpl implements SongRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -119,7 +117,7 @@ public class SongRepoImpl implements SongRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -138,7 +136,7 @@ public class SongRepoImpl implements SongRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -157,7 +155,7 @@ public class SongRepoImpl implements SongRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -205,7 +203,7 @@ public class SongRepoImpl implements SongRepo {
                 return song;
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

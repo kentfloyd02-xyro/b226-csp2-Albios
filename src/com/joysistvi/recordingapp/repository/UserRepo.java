@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserRepo {
 
-    boolean register(User user);
+    boolean register(String username, String password, String role);
 
     User login(String username, String password);
 
@@ -20,5 +20,7 @@ public interface UserRepo {
     boolean updateUser(User user);
 
     boolean deleteUser(int id);
+    
+    User checkUsername(String username);
 
 }

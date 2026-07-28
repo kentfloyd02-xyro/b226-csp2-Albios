@@ -7,10 +7,8 @@ package com.joysistvi.recordingapp.repository;
 import com.joysistvi.recordingapp.config.dbconnection;
 import com.joysistvi.recordingapp.model.Album;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,23 +26,22 @@ public class AlbumRepoImpl implements AlbumRepo {
                 + "JOIN artists ar ON a.artist_id = ar.artist_id "
                 + "ORDER BY a.album_id";
 
-        try (
-                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+         try (Connection conn = db.connect();PreparedStatement prep = conn.prepareStatement(query); ResultSet rs = prep.executeQuery()) {
 
-            while (rs.next()) {
+        while (rs.next()) {
 
-                Album album = new Album();
+            Album album = new Album();
 
-                album.setId(rs.getInt("album_id"));
-                album.setTitle(rs.getString("album_title"));
-                album.setYear(rs.getInt("album_year"));
-                album.setArtist_id(rs.getInt("artist_id"));
-                album.setArtistName(rs.getString("artist_name"));
+            album.setId(rs.getInt("album_id"));
+            album.setTitle(rs.getString("album_title"));
+            album.setYear(rs.getInt("album_year"));
+            album.setArtist_id(rs.getInt("artist_id"));
+            album.setArtistName(rs.getString("artist_name"));
 
-                albums.add(album);
-            }
+            albums.add(album);
+        }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -65,7 +62,7 @@ public class AlbumRepoImpl implements AlbumRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -87,7 +84,7 @@ public class AlbumRepoImpl implements AlbumRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -106,7 +103,7 @@ public class AlbumRepoImpl implements AlbumRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -140,7 +137,7 @@ public class AlbumRepoImpl implements AlbumRepo {
                 return album;
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

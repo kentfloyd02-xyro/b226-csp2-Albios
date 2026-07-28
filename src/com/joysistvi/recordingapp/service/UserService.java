@@ -17,8 +17,8 @@ public class UserService {
         return repo.login(username, password);
     }
 
-    public boolean register(User user) {
-        return repo.register(user);
+    public boolean register(String username, String password, String role) {
+        return repo.register(username, password, role);
     }
 
     public List<User> getAllUser() {
@@ -36,4 +36,9 @@ public class UserService {
     public boolean deleteUser(int id) {
         return repo.deleteUser(id);
     }
+    
+    public User checkUsername(String username){
+        return repo.checkUsername(username);
+    }
+    
 }

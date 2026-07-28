@@ -7,10 +7,8 @@ package com.joysistvi.recordingapp.repository;
 import com.joysistvi.recordingapp.config.dbconnection;
 import com.joysistvi.recordingapp.model.Artist;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,22 +21,21 @@ public class ArtistRepoImpl implements ArtistRepo {
 
         List<Artist> artists = new ArrayList<>();
 
-        String sql = "SELECT * FROM artists";
+        String query = "SELECT * FROM artists";
 
-        try (
-                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query); ResultSet rs = prep.executeQuery()) {
 
             while (rs.next()) {
 
                 Artist artist = new Artist(
                         rs.getInt("artist_id"),
                         rs.getString("artist_name"));
-                        
+
                 artists.add(artist);
 
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -57,7 +54,7 @@ public class ArtistRepoImpl implements ArtistRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -77,7 +74,7 @@ public class ArtistRepoImpl implements ArtistRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -96,7 +93,7 @@ public class ArtistRepoImpl implements ArtistRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -121,7 +118,7 @@ public class ArtistRepoImpl implements ArtistRepo {
                 );
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;

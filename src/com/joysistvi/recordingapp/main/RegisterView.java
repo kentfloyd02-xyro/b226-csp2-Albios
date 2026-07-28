@@ -27,13 +27,19 @@ public class RegisterView {
 
         while (true) {
             System.out.print("Username: ");
-            email = scanner.nextLine();
+            email = scanner.nextLine().trim();
 
-            if (email.length() >= 5) {
-                break;
-            } else {
-                System.out.println("Username  must be at least 5 characters long. Please try again.");
+            if (email.length() < 5) {
+                System.out.println("Username must be at least 5 characters long.");
+                continue;
             }
+
+            if (userController.checkUsername(email) != null) {
+                System.out.println("Username already exists. Please choose another one.");
+                continue;
+            }
+
+            break;
         }
 
         while (true) {
@@ -48,7 +54,7 @@ public class RegisterView {
         }
 
         User user = new User(email, password);
-        boolean success = userController.register(user);
+        boolean success = userController.register(email, password, "user");
 
         if (success) {
             System.out.println("Registration successful!");

@@ -8,6 +8,7 @@ import com.joysistvi.recordingapp.config.dbconnection;
 import com.joysistvi.recordingapp.model.Playlist;
 import com.joysistvi.recordingapp.model.PlaylistSong;
 
+import java.sql.SQLException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,11 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
         List<Playlist> playlists = new ArrayList<>();
 
-        String sql
-                = "SELECT playlist_id, playlist_name, created_at, user_id "
+        String query = "SELECT playlist_id, playlist_name, created_at, user_id "
                 + "FROM playlists "
                 + "ORDER BY playlist_name";
 
-        try (
-                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query); ResultSet rs = prep.executeQuery()) {
 
             while (rs.next()) {
 
@@ -42,7 +41,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -52,11 +51,10 @@ public class PlaylistRepoImpl implements PlaylistRepo {
     @Override
     public Playlist checkPlaylistId(int id) {
 
-        String sql
-                = "SELECT * FROM playlists WHERE playlist_id=?";
+        String query = "SELECT * FROM playlists WHERE playlist_id=?";
 
         try (
-                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(sql)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
 
@@ -75,7 +73,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -86,11 +84,11 @@ public class PlaylistRepoImpl implements PlaylistRepo {
     @Override
     public boolean createPlaylist(Playlist playlist) {
 
-        String sql
+        String query
                 = "INSERT INTO playlists(playlist_name,created_at,user_id) VALUES(?,?,?)";
 
         try (
-                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(sql)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setString(1, playlist.getPlaylistName());
             prep.setString(2, playlist.getCreatedAt());
@@ -98,7 +96,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -123,7 +121,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -137,26 +135,22 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
             conn.setAutoCommit(false);
 
-            PreparedStatement ps1
-                    = conn.prepareStatement(
-                            "DELETE FROM playlist_songs WHERE playlist_id=?");
+            PreparedStatement prep = conn.prepareStatement("DELETE FROM playlist_songs WHERE playlist_id=?");
 
-            ps1.setInt(1, id);
-            ps1.executeUpdate();
+            prep.setInt(1, id);
+            prep.executeUpdate();
 
-            PreparedStatement ps2
-                    = conn.prepareStatement(
-                            "DELETE FROM playlists WHERE playlist_id=?");
+            PreparedStatement prep2 = conn.prepareStatement("DELETE FROM playlists WHERE playlist_id=?");
 
-            ps2.setInt(1, id);
+            prep2.setInt(1, id);
 
-            boolean deleted = ps2.executeUpdate() > 0;
+            boolean deleted = prep2.executeUpdate() > 0;
 
             conn.commit();
 
             return deleted;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -166,18 +160,17 @@ public class PlaylistRepoImpl implements PlaylistRepo {
     @Override
     public boolean addSongToPlaylist(int playlistId, int songId) {
 
-        String sql
-                = "INSERT INTO playlist_songs(playlist_id,song_id) VALUES(?,?)";
+        String query = "INSERT INTO playlist_songs(playlist_id,song_id) VALUES(?,?)";
 
         try (
-                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(sql)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, playlistId);
             prep.setInt(2, songId);
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -188,18 +181,17 @@ public class PlaylistRepoImpl implements PlaylistRepo {
     @Override
     public boolean removeSongFromPlaylist(int playlistId, int songId) {
 
-        String sql
-                = "DELETE FROM playlist_songs WHERE playlist_id=? AND song_id=?";
+        String query = "DELETE FROM playlist_songs WHERE playlist_id=? AND song_id=?";
 
         try (
-                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(sql)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, playlistId);
             prep.setInt(2, songId);
 
             return prep.executeUpdate() > 0;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -210,11 +202,10 @@ public class PlaylistRepoImpl implements PlaylistRepo {
     @Override
     public boolean songAlreadyExists(int playlistId, int songId) {
 
-        String sql
-                = "SELECT * FROM playlist_songs WHERE playlist_id=? AND song_id=?";
+        String query = "SELECT * FROM playlist_songs WHERE playlist_id=? AND song_id=?";
 
         try (
-                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(sql)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, playlistId);
             prep.setInt(2, songId);
@@ -223,7 +214,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
             return rs.next();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -236,8 +227,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
         List<PlaylistSong> songs = new ArrayList<>();
 
-        String sql
-                = "SELECT p.playlist_name,"
+        String query = "SELECT p.playlist_name,"
                 + " s.song_id,"
                 + " s.song_title,"
                 + " s.song_genre,"
@@ -249,7 +239,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
                 + "ORDER BY s.song_title";
 
         try (
-                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(sql)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, playlistId);
 
@@ -269,7 +259,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
