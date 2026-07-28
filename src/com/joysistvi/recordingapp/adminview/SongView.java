@@ -25,9 +25,7 @@ public class SongView {
 
     public void dashboard() {
 
-        boolean running = true;
-
-        while (running) {
+        while (true) {
             clearScreen();
             System.out.println("\n=== Song Menu ===");
             System.out.println("1. Add Song");

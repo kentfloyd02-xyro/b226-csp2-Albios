@@ -21,10 +21,8 @@ public class UserView {
     public void dashboard() {
 
         while (true) {
-
             clearScreen();
-
-            System.out.println("===== USER MENU =====");
+            System.out.println("\n===== USER MENU =====");
             System.out.println("1. View Users");
             System.out.println("2. Update User");
             System.out.println("3. Delete User");

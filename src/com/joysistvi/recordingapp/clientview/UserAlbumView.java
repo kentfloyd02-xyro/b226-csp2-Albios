@@ -6,6 +6,7 @@ package com.joysistvi.recordingapp.clientview;
 
 import com.joysistvi.recordingapp.controller.AlbumController;
 import com.joysistvi.recordingapp.model.Album;
+import static com.joysistvi.recordingapp.utils.ClearScreen.clearScreen;
 
 import static com.joysistvi.recordingapp.utils.Scan.scanner;
 
@@ -23,7 +24,8 @@ public class UserAlbumView {
 
     public void dashboard() {
         while (true) {
-            System.out.println("=== ALBUM VIEW ===");
+            clearScreen();
+            System.out.println("\n=== ALBUM VIEW ===");
             System.out.println("1. VIEW ALL ALBUMS");
             System.out.println("2. VIEW SPECIFIC ALBUM");
             System.out.println("3. BACK");

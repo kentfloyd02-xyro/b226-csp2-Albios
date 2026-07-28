@@ -32,7 +32,7 @@ public class PlaylistView {
 
         while (true) {
             clearScreen();
-            System.out.println("===== MY PLAYLISTS =====");
+            System.out.println("\n===== MY PLAYLISTS =====");
             System.out.println("1. View My Playlists");
             System.out.println("2. Create Playlist");
             System.out.println("3. Delete Playlist");

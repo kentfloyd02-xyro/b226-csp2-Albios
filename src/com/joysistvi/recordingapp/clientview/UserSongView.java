@@ -6,6 +6,7 @@ package com.joysistvi.recordingapp.clientview;
 
 import com.joysistvi.recordingapp.controller.SongController;
 import com.joysistvi.recordingapp.model.Song;
+import static com.joysistvi.recordingapp.utils.ClearScreen.clearScreen;
 import static com.joysistvi.recordingapp.utils.Scan.scanner;
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class UserSongView {
 
     public void dashboard() {
         while (true) {
-            System.out.println("=== VIEW ===");
+            clearScreen();
+            System.out.println("\n=== SONG VIEW ===");
             System.out.println("1. VIEW ALL SONG");
             System.out.println("2. VIEW SPECIFIC COLUMN SONG");
             System.out.println("3. SEARCH SONG");

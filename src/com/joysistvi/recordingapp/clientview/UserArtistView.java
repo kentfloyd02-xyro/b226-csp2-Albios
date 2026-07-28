@@ -6,6 +6,7 @@ package com.joysistvi.recordingapp.clientview;
 
 import com.joysistvi.recordingapp.controller.ArtistController;
 import com.joysistvi.recordingapp.model.Artist;
+import static com.joysistvi.recordingapp.utils.ClearScreen.clearScreen;
 import static com.joysistvi.recordingapp.utils.Scan.scanner;
 
 /**
@@ -23,8 +24,8 @@ public class UserArtistView {
     public void dashboard(){
     
          while (true) {
-
-            System.out.println("=== VIEW ===");
+            clearScreen();
+            System.out.println("\n=== ARTIST VIEW ===");
             System.out.println("1. VIEW ALL ARTISTS");
             System.out.println("2. VIEW SPECIFIC ARTIST");
             System.out.println("3. BACK");

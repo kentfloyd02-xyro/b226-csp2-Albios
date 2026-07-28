@@ -28,7 +28,7 @@ public class AlbumView {
 
             clearScreen();
 
-            System.out.println("===== ALBUM MENU =====");
+            System.out.println("\n===== ALBUM MENU =====");
             System.out.println("1. Add Album");
             System.out.println("2. View Albums");
             System.out.println("3. Update Album");

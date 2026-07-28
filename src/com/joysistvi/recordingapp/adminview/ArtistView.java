@@ -19,10 +19,8 @@ public class ArtistView {
 
     public void dashboard() {
         while (true) {
-
             clearScreen();
-
-            System.out.println("===== ARTIST MENU =====");
+            System.out.println("\n===== ARTIST MENU =====");
             System.out.println("1. Add Artist");
             System.out.println("2. View Artist");
             System.out.println("3. Update Artist");
