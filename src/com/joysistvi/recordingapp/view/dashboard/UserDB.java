@@ -82,7 +82,7 @@ public class UserDB {
 
                 case 5:
                     System.out.println("Logging out...");
-                    System.exit(0);
+                    return;
 
                 default:
                     System.out.println("Invalid Input!");
