@@ -6,6 +6,7 @@ package com.joysistvi.recordingapp.main;
 
 import com.joysistvi.recordingapp.controller.UserController;
 import com.joysistvi.recordingapp.model.User;
+import com.joysistvi.recordingapp.view.dashboard.UserDB;
 import java.util.Scanner;
 
 public class RegisterView {
@@ -23,16 +24,15 @@ public class RegisterView {
         System.out.println("\n===== REGISTER =====");
         String email;
         String password;
-        String role = null;
 
         while (true) {
-            System.out.print("Email: ");
+            System.out.print("Username: ");
             email = scanner.nextLine();
 
-            if (email.contains("@") && email.contains(".")) {
+            if (email.length() >= 5) {
                 break;
             } else {
-                System.out.println("Invalid email format. Please try again.");
+                System.out.println("Username  must be at least 5 characters long. Please try again.");
             }
         }
 
@@ -40,32 +40,24 @@ public class RegisterView {
             System.out.print("Password: ");
             password = scanner.nextLine();
 
-            if (password.length() >= 8) {
+            if (password.length() >= 5) {
                 break;
             } else {
-                System.out.println("Password must be at least 8 characters long.");
+                System.out.println("Password must be at least 5 characters long.");
             }
         }
 
-        while (true) {
-            System.out.println("ADMIN || USER");
-            System.out.print("Role: ");
-            role = scanner.nextLine();
-
-            if (role.equalsIgnoreCase("ADMIN") || role.equalsIgnoreCase("USER")) {
-                break;
-            } else {
-                System.out.println("Invalid role. Please enter ADMIN or USER.");
-            }
-        }
-
-        User user = new User(email, password, role);
+        User user = new User(email, password);
         boolean success = userController.register(user);
 
         if (success) {
-            System.out.println("Registration successful!\n");
+            System.out.println("Registration successful!");
+
+            UserDB userDB = new UserDB();
+            userDB.userMenu();
+
         } else {
-            System.out.println("Registration failed. Email may already exist.\n");
+            System.out.println("Registration failed. Username may already exist.");
         }
     }
 }

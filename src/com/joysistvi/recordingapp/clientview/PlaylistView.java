@@ -5,7 +5,9 @@
 package com.joysistvi.recordingapp.adminview;
 
 import com.joysistvi.recordingapp.controller.PlaylistController;
+import com.joysistvi.recordingapp.controller.SongController;
 import com.joysistvi.recordingapp.model.Playlist;
+import com.joysistvi.recordingapp.model.Song;
 
 import static com.joysistvi.recordingapp.utils.ClearScreen.clearScreen;
 import static com.joysistvi.recordingapp.utils.Scan.scanner;
@@ -13,9 +15,15 @@ import static com.joysistvi.recordingapp.utils.Scan.scanner;
 public class PlaylistView {
 
     private final PlaylistController playlistController;
+    private final SongController songController;
+
+    public PlaylistView(PlaylistController playlistController, SongController songController) {
+        this.playlistController = playlistController;
+        this.songController = songController;
+    }
 
     public PlaylistView(PlaylistController playlistController) {
-        this.playlistController = playlistController;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public void dashboard() {
@@ -29,8 +37,7 @@ public class PlaylistView {
             System.out.println("2. View Playlists");
             System.out.println("3. Update Playlist");
             System.out.println("4. Delete Playlist");
-            System.out.println("5. Truncate Playlist");
-            System.out.println("0. Back");
+            System.out.println("5. Back");
             System.out.print("Choose: ");
 
             if (!scanner.hasNextInt()) {
@@ -61,10 +68,6 @@ public class PlaylistView {
                     break;
 
                 case 5:
-                    truncatePlaylist();
-                    break;
-
-                case 0:
                     return;
 
                 default:
@@ -79,11 +82,25 @@ public class PlaylistView {
     private void addPlaylist() {
 
         System.out.print("Created At (YYYY-MM-DD): ");
-        String createdAt = scanner.nextLine();
+        String createdAt = scanner.nextLine().trim();
 
         System.out.print("Song ID: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("NUMBER ONLY!");
+            scanner.nextLine();
+            return;
+        }
+
         int songId = scanner.nextInt();
         scanner.nextLine();
+
+        Song song = songController.checkSongId(songId);
+
+        if (song == null) {
+            System.out.println("Song does not exist.");
+            return;
+        }
 
         Playlist playlist = new Playlist(createdAt, songId);
 
@@ -95,26 +112,25 @@ public class PlaylistView {
     }
 
     private void viewPlaylists() {
-
         if (playlistController.listPlaylists().isEmpty()) {
             System.out.println("No playlists found.");
             return;
         }
 
-        System.out.println("+----+---------------------+---------+");
-        System.out.printf("| %-2s | %-19s | %-7s |%n",
-                "ID", "Created At", "Song ID");
-        System.out.println("+----+---------------------+---------+");
+        System.out.println("+----+---------------------+------------------------------+");
+        System.out.printf("| %-2s | %-19s | %-28s |%n",
+                "ID", "Created At", "Song");
+        System.out.println("+----+---------------------+------------------------------+");
 
         for (Playlist playlist : playlistController.listPlaylists()) {
 
-            System.out.printf("| %-2d | %-19s | %-7d |%n",
+            System.out.printf("| %-2d | %-19s | %-28s |%n",
                     playlist.getId(),
                     playlist.getCreated_at(),
-                    playlist.getSong_id());
+                    playlist.getSongTitle());
         }
 
-        System.out.println("+----+---------------------+---------+");
+        System.out.println("+----+---------------------+------------------------------+");
     }
 
     private void updatePlaylist() {
@@ -126,7 +142,7 @@ public class PlaylistView {
         Playlist playlist = playlistController.checkPlaylistId(id);
 
         if (playlist == null) {
-            System.out.println("Playlist not found.");
+            System.out.println("Playlist does not exist.");
             return;
         }
 
@@ -137,7 +153,14 @@ public class PlaylistView {
         int songId = scanner.nextInt();
         scanner.nextLine();
 
-        Playlist updated = new Playlist(createdAt, id);
+        Song song = songController.checkSongId(songId);
+
+        if (song == null) {
+            System.out.println("Song does not exist.");
+            return;
+        }
+
+        Playlist updated = new Playlist(id, createdAt, songId);
 
         if (playlistController.updatePlaylist(updated)) {
             System.out.println("Playlist updated successfully.");
@@ -149,13 +172,28 @@ public class PlaylistView {
     private void deletePlaylist() {
 
         System.out.print("Enter Playlist ID: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("NUMBER ONLY!");
+            scanner.nextLine();
+            return;
+        }
+
         int id = scanner.nextInt();
         scanner.nextLine();
 
         Playlist playlist = playlistController.checkPlaylistId(id);
 
         if (playlist == null) {
-            System.out.println("Playlist not found.");
+            System.out.println("Playlist does not exist.");
+            return;
+        }
+
+        System.out.print("Are you sure? (YES/NO): ");
+        String confirm = scanner.nextLine();
+
+        if (!confirm.equalsIgnoreCase("YES")) {
+            System.out.println("Delete cancelled.");
             return;
         }
 
@@ -163,23 +201,6 @@ public class PlaylistView {
             System.out.println("Playlist deleted successfully.");
         } else {
             System.out.println("Failed to delete playlist.");
-        }
-    }
-
-    private void truncatePlaylist() {
-
-        System.out.print("Are you sure? (YES/NO): ");
-        String answer = scanner.nextLine();
-
-        if (!answer.equalsIgnoreCase("YES")) {
-            System.out.println("Cancelled.");
-            return;
-        }
-
-        if (playlistController.truncatePlaylist()) {
-            System.out.println("Playlist table truncated.");
-        } else {
-            System.out.println("Failed.");
         }
     }
 }

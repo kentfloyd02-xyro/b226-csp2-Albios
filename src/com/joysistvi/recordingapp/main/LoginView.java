@@ -20,40 +20,43 @@ public class LoginView {
     }
 
     public User login() {
-        System.out.println("\n===== LOGIN =====");
-        String email;
-        String password;
-        
         while (true) {
-            System.out.print("Email: ");
-            email = scanner.nextLine();
 
-            if (email.contains("@") && email.contains(".")) {
-                break;
-            } else {
-                System.out.println("Invalid email format. Please try again.");
+            System.out.println("\n===== LOGIN =====");
+
+            String username;
+            String password;
+
+            while (true) {
+                System.out.print("Username: ");
+                username = scanner.nextLine();
+
+                if (username.length() >= 5) {
+                    break;
+                } else {
+                    System.out.println("Username must be at least 5 characters long.");
+                }
             }
-        }
 
-        while (true) {
-            System.out.print("Password: ");
-            password = scanner.nextLine();
+            while (true) {
+                System.out.print("Password: ");
+                password = scanner.nextLine();
 
-            if (password.length() >= 8) {
-                break;
-            } else {
-                System.out.println("Password must be at least 8 characters long.");
+                if (password.length() >= 5) {
+                    break;
+                } else {
+                    System.out.println("Password must be at least 5 characters long.");
+                }
             }
-        }
-        User user = userController.login(email, password);
 
-        if (user != null) {
-            System.out.println("Login successful!\n");
-            return user;
-        } else {
-            System.out.println("Invalid username or password.\n");
-            return null;
+            User user = userController.login(username, password);
+
+            if (user != null) {
+                System.out.println("Login successful!\n");
+                return user;
+            }
+
+            System.out.println("Invalid username or password. Please try again.\n");
         }
     }
-
 }

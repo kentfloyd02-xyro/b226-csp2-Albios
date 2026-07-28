@@ -35,8 +35,4 @@ public class PlaylistController {
     public boolean deletePlaylist(int id) {
         return playlistService.deletePlaylist(id);
     }
-
-    public boolean truncatePlaylist() {
-        return playlistService.truncatePlaylist();
-    }
 }

@@ -45,7 +45,4 @@ public class SongController {
         return songService.checkSongId(id);
     }
     
-    public boolean TruncateSong() {
-        return songService.TruncateSong();
-    }
 }

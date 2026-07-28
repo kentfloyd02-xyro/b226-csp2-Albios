@@ -19,5 +19,4 @@ public interface PlaylistRepo {
 
     boolean deletePlaylist(int id);
 
-    boolean truncatePlaylist();
 }

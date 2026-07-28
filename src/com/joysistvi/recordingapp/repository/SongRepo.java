@@ -10,12 +10,11 @@ import java.util.List;
 
 public interface SongRepo {
 
-    List<Song> getAllSongs();
+    List <Song> getAllSongs();
     Song checkSongId(int id);
     boolean createSong(Song song);
     boolean updateSong(Song song);
     boolean deleteSong(int id);
     boolean archiveSong(int id);
     boolean restoreSong(int id);
-    boolean TruncateSong();
 }

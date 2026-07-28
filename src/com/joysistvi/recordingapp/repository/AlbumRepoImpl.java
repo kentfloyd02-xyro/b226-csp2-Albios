@@ -31,8 +31,10 @@ public class AlbumRepoImpl implements AlbumRepo {
             while (rs.next()) {
 
                 Album album = new Album(
-                        rs.getString("album_title"), rs.getInt("album_id"),
-                        rs.getInt("album_year"));
+                        rs.getInt("album_id"),
+                        rs.getString("album_title"),
+                        rs.getInt("album_year"), 
+                        rs.getInt("artist_id"));
 
                 albums.add(album);
             }
@@ -121,8 +123,10 @@ public class AlbumRepoImpl implements AlbumRepo {
             if (rs.next()) {
 
                 return new Album(
-                        rs.getString("album_title"), rs.getInt("album_id"),
-                        rs.getInt("album_year"));
+                        rs.getInt("album_id"),
+                        rs.getString("album_title"),
+                        rs.getInt("album_year"),
+                        rs.getInt("artist_id"));
 
             }
 
@@ -133,21 +137,4 @@ public class AlbumRepoImpl implements AlbumRepo {
         return null;
     }
 
-    @Override
-    public boolean truncateAlbum() {
-
-        String query = "TRUNCATE TABLE albums";
-
-        try (
-                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
-
-            prep.executeUpdate();
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
 }

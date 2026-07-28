@@ -36,8 +36,4 @@ public class PlaylistService {
     public boolean deletePlaylist(int id) {
         return playlistRepo.deletePlaylist(id);
     }
-
-    public boolean truncatePlaylist() {
-        return playlistRepo.truncatePlaylist();
-    }
 }

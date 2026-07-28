@@ -20,17 +20,27 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
         List<Playlist> playlists = new ArrayList<>();
 
-        String sql = "SELECT * FROM playlists";
+        String sql = "SELECT\n"
+                + "    p.playlist_id,\n"
+                + "    p.created_at,\n"
+                + "    p.song_id,\n"
+                + "    s.title\n"
+                + "FROM playlists p\n"
+                + "JOIN songs s\n"
+                + "ON p.song_id = s.song_id\n"
+                + "ORDER BY p.playlist_id;";
 
         try (
                 Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
 
-                Playlist playlist = new Playlist(
-                        rs.getString("created_at"),
-                        rs.getInt("playlist_id")
-                );
+                Playlist playlist = new Playlist();
+
+                playlist.setId(rs.getInt("playlist_id"));
+                playlist.setCreated_at(rs.getString("created_at"));
+                playlist.setSong_id(rs.getInt("song_id"));
+                playlist.setSongTitle(rs.getString("title"));
 
                 playlists.add(playlist);
             }
@@ -105,7 +115,11 @@ public class PlaylistRepoImpl implements PlaylistRepo {
     @Override
     public Playlist checkPlaylistId(int id) {
 
-        String query = "SELECT * FROM playlists WHERE playlist_id=?";
+        String query
+                = "SELECT p.playlist_id, p.created_at, p.song_id, s.title "
+                + "FROM playlists p "
+                + "JOIN songs s ON p.song_id = s.song_id "
+                + "WHERE p.playlist_id = ?";
 
         try (
                 Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
@@ -116,10 +130,14 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
             if (rs.next()) {
 
-                return new Playlist(
-                        rs.getString("created_at"),
-                        rs.getInt("playlist_id")
-                );
+                Playlist playlist = new Playlist();
+
+                playlist.setId(rs.getInt("playlist_id"));
+                playlist.setCreated_at(rs.getString("created_at"));
+                playlist.setSong_id(rs.getInt("song_id"));
+                playlist.setSongTitle(rs.getString("title"));
+
+                return playlist;
             }
 
         } catch (Exception e) {
@@ -129,21 +147,4 @@ public class PlaylistRepoImpl implements PlaylistRepo {
         return null;
     }
 
-    @Override
-    public boolean truncatePlaylist() {
-
-        String query = "TRUNCATE TABLE playlists";
-
-        try (
-                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
-
-            prep.executeUpdate();
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
 }

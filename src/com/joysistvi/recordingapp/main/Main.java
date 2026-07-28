@@ -9,10 +9,9 @@ import com.joysistvi.recordingapp.config.dbconnection;
 import com.joysistvi.recordingapp.controller.SongController;
 import com.joysistvi.recordingapp.controller.UserController;
 import com.joysistvi.recordingapp.model.User;
+import static com.joysistvi.recordingapp.utils.Scan.scanner;
 import com.joysistvi.recordingapp.view.dashboard.AdminDB;
-import com.joysistvi.recordingapp.main.LoginView;
-import com.joysistvi.recordingapp.main.RegisterView;
-import com.joysistvi.recordingapp.view.UserDB;
+import com.joysistvi.recordingapp.view.dashboard.UserDB;
 import java.util.Scanner;
 
 public class Main {
@@ -31,6 +30,16 @@ public class Main {
             System.out.println("2. Register");
             System.out.println("3. Exit");
             System.out.print("Choose: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
+                continue;
+            }
+
             int choice = scanner.nextInt();
             scanner.nextLine();
 

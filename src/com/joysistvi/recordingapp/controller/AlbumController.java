@@ -37,8 +37,4 @@ public class AlbumController {
         return albumService.deleteAlbum(id);
     }
 
-    public boolean truncateAlbum() {
-        return albumService.truncateAlbum();
-    }
-
 }

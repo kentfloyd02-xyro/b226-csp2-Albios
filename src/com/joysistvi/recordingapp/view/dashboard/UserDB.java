@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.joysistvi.recordingapp.view;
+package com.joysistvi.recordingapp.view.dashboard;
 
 import com.joysistvi.recordingapp.adminview.PlaylistView;
 import com.joysistvi.recordingapp.adminview.SongView;
@@ -33,8 +33,8 @@ public class UserDB {
         PlaylistController playlistController = new PlaylistController();
         UserController userController = new UserController();
 
-        songView = new SongView(songController);
-        albumView = new AlbumView(albumController);
+        songView = new SongView(songController, albumController);
+        albumView = new AlbumView(albumController, artistController);
         playlistView = new PlaylistView(playlistController);
         userView = new UserView(userController);
     }
@@ -52,7 +52,7 @@ public class UserDB {
             System.out.println("4. Create Playlist");
             System.out.println("5. View My Playlist");
             System.out.println("6. Update Profile");
-            System.out.println("0. Exit");
+            System.out.println("0. Logout");
             System.out.print("Choose an option: ");
 
             if (!scanner.hasNextInt()) {

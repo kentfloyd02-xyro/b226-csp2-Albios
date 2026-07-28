@@ -23,23 +23,36 @@ public class SongRepoImpl implements SongRepo {
 
         List<Song> songs = new ArrayList<>();
 
-        String sql = "SELECT * FROM songs";
+        String query = "SELECT "
+                + "s.song_id, "
+                + "s.song_title, "
+                + "s.song_genre, "
+                + "s.song_length, "
+                + "a.album_id, "
+                + "a.album_title, "
+                + "ar.artist_name "
+                + "FROM songs s "
+                + "JOIN albums a ON s.album_id = a.album_id "
+                + "JOIN artists ar ON a.artist_id = ar.artist_id "
+                + "ORDER BY a.album_id, s.song_id";
 
         try (
-                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
 
-                Song song = new Song(
-                        rs.getInt("song_id"),
-                        rs.getString("song_title"),
-                        rs.getString("song_length"),
-                        rs.getString("song_genre"),
-                        rs.getInt("album_id")
-                );
+                Song song = new Song();
+
+                song.setId(rs.getInt("song_id"));
+                song.setTitle(rs.getString("song_title"));
+                song.setGenre(rs.getString("song_genre"));
+                song.setLength(rs.getString("song_length"));
+                song.setAlbum_id(rs.getInt("album_id"));
+
+                song.setAlbumName(rs.getString("album_title"));
+                song.setArtistName(rs.getString("artist_name"));
 
                 songs.add(song);
-
             }
 
         } catch (Exception e) {
@@ -153,9 +166,24 @@ public class SongRepoImpl implements SongRepo {
 
     @Override
     public Song checkSongId(int id) {
-        String query = "SELECT * FROM playlists WHERE song_id=?";
 
-        try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
+        String query
+                = "SELECT "
+                + "s.song_id, "
+                + "s.song_title, "
+                + "s.song_genre, "
+                + "s.song_length, "
+                + "a.album_id, "
+                + "a.album_title, "
+                + "ar.artist_name "
+                + "FROM songs s "
+                + "JOIN albums a ON s.album_id = a.album_id "
+                + "JOIN artists ar ON a.artist_id = ar.artist_id "
+                + "WHERE s.song_id = ? "
+                + "ORDER BY a.album_id, s.song_id";
+
+        try (
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
 
@@ -163,32 +191,25 @@ public class SongRepoImpl implements SongRepo {
 
             if (result.next()) {
 
-                return new Song(
-                        result.getInt("song_id"),
-                        result.getString("song_title"),
-                        result.getString("song_length"),
-                        result.getString("song_genre"),
-                        result.getInt("album_id")
-                );
+                Song song = new Song();
+
+                song.setId(result.getInt("song_id"));
+                song.setTitle(result.getString("song_title"));
+                song.setGenre(result.getString("song_genre"));
+                song.setLength(result.getString("song_length"));
+                song.setAlbum_id(result.getInt("album_id"));
+
+                song.setAlbumName(result.getString("album_title"));
+                song.setArtistName(result.getString("artist_name"));
+
+                return song;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
-    }
-
-    @Override
-    public boolean TruncateSong() {
-        String query = "TRUNCATE TABLE songs";
-
-        try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
-            prep.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
 }

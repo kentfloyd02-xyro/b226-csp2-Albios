@@ -98,14 +98,12 @@ public class UserRepoImpl implements UserRepo {
 
     public boolean updateUser(User user) {
 
-        String query = "UPDATE users SET username = ?,password = ?,role = ? WHERE user_id = ?";
+        String query = "UPDATE users SET role = ? WHERE user_id = ?";
 
         try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
-
-            prep.setString(1, user.getUsername());
-            prep.setString(2, user.getPassword());
-            prep.setString(3, user.getRole());
-            prep.setInt(4, user.getId());
+            
+            prep.setString(1, user.getRole());
+            prep.setInt(2, user.getId());
 
             return prep.executeUpdate() > 0;
 

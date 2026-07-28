@@ -25,11 +25,10 @@ public class UserView {
             clearScreen();
 
             System.out.println("===== USER MENU =====");
-            System.out.println("1. Add User");
-            System.out.println("2. View Users");
-            System.out.println("3. Update User");
-            System.out.println("4. Delete User");
-            System.out.println("0. Back");
+            System.out.println("1. View Users");
+            System.out.println("2. Update User");
+            System.out.println("3. Delete User");
+            System.out.println("4. Back");
             System.out.print("Choose: ");
 
             if (!scanner.hasNextInt()) {
@@ -47,54 +46,26 @@ public class UserView {
             switch (choice) {
 
                 case 1:
-                    addUser();
-                    break;
-
-                case 2:
                     viewUsers();
                     break;
 
-                case 3:
+                case 2:
                     updateUser();
                     break;
 
-                case 4:
+                case 3:
                     deleteUser();
                     break;
 
-                case 0:
+                case 4:
                     return;
 
                 default:
-                    System.out.println("Invalid input.");
+                    System.out.println("Invalid Input");
             }
 
             System.out.println("\nPress Enter to continue...");
             scanner.nextLine();
-        }
-    }
-
-    private void addUser() {
-
-        System.out.print("Username: ");
-        String username = scanner.nextLine();
-
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
-
-        System.out.print("Role: ");
-        String role = scanner.nextLine();
-
-        User user = new User(
-                username,
-                password,
-                role
-        );
-
-        if (userController.register(user)) {
-            System.out.println("User added successfully.");
-        } else {
-            System.out.println("Failed to add user.");
         }
     }
 
@@ -152,19 +123,12 @@ public class UserView {
         System.out.println("Current Username: " + user.getUsername());
         System.out.println("Current Role: " + user.getRole());
 
-        System.out.print("New Username: ");
-        String username = scanner.nextLine();
-
-        System.out.print("New Password: ");
-        String password = scanner.nextLine();
-
+        
         System.out.print("New Role: ");
         String role = scanner.nextLine();
 
         User updatedUser = new User(
                 id,
-                username,
-                password,
                 role
         );
 
@@ -200,10 +164,10 @@ public class UserView {
                 + user.getUsername()
         );
 
-        System.out.print("Are you sure you want to delete this user? (Y/N): ");
+        System.out.print("Are you sure you want to delete this user? (Yes/No): ");
         String confirmation = scanner.nextLine();
 
-        if (!confirmation.equalsIgnoreCase("Y")) {
+        if (!confirmation.equalsIgnoreCase("Yes")) {
             System.out.println("Delete cancelled.");
             return;
         }

@@ -23,7 +23,7 @@ public class ArtistRepoImpl implements ArtistRepo {
 
         List<Artist> artists = new ArrayList<>();
 
-        String sql = "SELECT * FROM artits";
+        String sql = "SELECT * FROM artists";
 
         try (
                 Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -31,9 +31,10 @@ public class ArtistRepoImpl implements ArtistRepo {
             while (rs.next()) {
 
                 Artist artist = new Artist(
-                        rs.getInt("artits_id"),
-                        rs.getString("artits_name")
-                );
+                        rs.getInt("artist_id"),
+                        rs.getString("artist_name"));
+                        
+                artists.add(artist);
 
             }
 
@@ -66,12 +67,13 @@ public class ArtistRepoImpl implements ArtistRepo {
     @Override
     public boolean updateArtist(Artist artist) {
 
-        String query = "UPDATE artists SET artist_name = ? WHERE artist_id";
+        String query = "UPDATE artists SET artist_name = ? WHERE artist_id = ?";
 
         try (
                 Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setString(1, artist.getName());
+            prep.setInt(2, artist.getId());
 
             return prep.executeUpdate() > 0;
 

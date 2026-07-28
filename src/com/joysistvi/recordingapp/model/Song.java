@@ -9,6 +9,7 @@ package com.joysistvi.recordingapp.model;
  * @author ktagl
  */
 public class Song {
+
     // private fields
     private int id;
     private String title;
@@ -16,6 +17,8 @@ public class Song {
     private String genre;
     private int album_id;
     private int is_archived;
+    private String albumName;
+    private String artistName;
 
     public Song() {
     }
@@ -82,5 +85,21 @@ public class Song {
 
     public void setAlbum_id(int album_id) {
         this.album_id = album_id;
+    }
+
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 }

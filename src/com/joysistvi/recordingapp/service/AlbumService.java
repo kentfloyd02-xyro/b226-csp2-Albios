@@ -38,8 +38,4 @@ public class AlbumService {
         return albumRepo.deleteAlbum(id);
     }
 
-    public boolean truncateAlbum() {
-        return albumRepo.truncateAlbum();
-    }
-
 }

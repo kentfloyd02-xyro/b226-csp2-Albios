@@ -27,7 +27,7 @@ public class ArtistView {
             System.out.println("2. View Artist");
             System.out.println("3. Update Artist");
             System.out.println("4. Delete Artist");
-            System.out.println("0. Back");
+            System.out.println("5. Back");
             System.out.print("Choose: ");
 
             if (!scanner.hasNextInt()) {
@@ -57,7 +57,7 @@ public class ArtistView {
                     deleteArtist();
                     break;
 
-                case 0:
+                case 5:
                     return;
 
                 default:
@@ -71,87 +71,310 @@ public class ArtistView {
 
     private void addArtist() {
 
-        System.out.print("Artist Name: ");
-        String name = scanner.nextLine();
+        while (true) {
 
-        Artist artist = new Artist(name);
+            System.out.println("=== ADD ARTIST ===");
+            System.out.println("1. ADD ARTIST");
+            System.out.println("2. BACK");
+            System.out.print("Choose an option: ");
 
-        if (artistController.createArtist(artist)) {
-            System.out.println("Album added successfully.");
-        } else {
-            System.out.println("Failed to add album.");
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+                continue;
+            }
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
+                case 1:
+
+                    String name;
+
+                    while (true) {
+
+                        System.out.print("Artist Name: ");
+                        name = scanner.nextLine().trim();
+
+                        if (!name.isEmpty()) {
+                            break;
+                        }
+
+                        System.out.println("Artist name cannot be empty.");
+                    }
+
+                    Artist artist = new Artist(name);
+
+                    if (artistController.createArtist(artist)) {
+                        System.out.println("Artist added successfully!");
+                    } else {
+                        System.out.println("Failed to add artist.");
+                    }
+
+                    System.out.println("Press Enter to continue...");
+                    scanner.nextLine();
+                    break;
+
+                case 2:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input!");
+            }
         }
 
     }
 
     void viewArtist() {
 
-        if (artistController.getAllArtist().isEmpty()) {
-            System.out.println("No albums found.");
-            return;
+        while (true) {
+
+            System.out.println("=== VIEW ===");
+            System.out.println("1. VIEW ALL ARTISTS");
+            System.out.println("2. VIEW SPECIFIC ARTIST");
+            System.out.println("3. BACK");
+            System.out.print("Choose an option: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+                continue;
+            }
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
+                case 1:
+
+                    if (artistController.getAllArtist().isEmpty()) {
+                        System.out.println("No artists found.");
+                        break;
+                    }
+
+                    System.out.println("+----+------------------------------+");
+                    System.out.printf("| %-2s | %-28s |%n", "ID", "Artist Name");
+                    System.out.println("+----+------------------------------+");
+
+                    for (Artist artist : artistController.getAllArtist()) {
+
+                        System.out.printf("| %-2d | %-28s |%n",
+                                artist.getId(),
+                                artist.getName());
+                    }
+
+                    System.out.println("+----+------------------------------+");
+                    break;
+
+                case 2:
+
+                    System.out.print("Enter Artist ID: ");
+
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("NUMBER ONLY!");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Artist artist = artistController.checkArtistId(id);
+
+                    if (artist == null) {
+                        System.out.println("Artist does not exist.");
+                    } else {
+
+                        System.out.println("+----+------------------------------+");
+                        System.out.printf("| %-2s | %-28s |%n", "ID", "Artist Name");
+                        System.out.println("+----+------------------------------+");
+
+                        System.out.printf("| %-2d | %-28s |%n",
+                                artist.getId(),
+                                artist.getName());
+
+                        System.out.println("+----+------------------------------+");
+                    }
+
+                    break;
+
+                case 3:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input!");
+            }
+
+            System.out.println("Press Enter to continue...");
+            scanner.nextLine();
         }
-
-        System.out.println("+----+------------------------------+------+-----------+");
-        System.out.printf("| %-2s | %-28s | %-4s | %-9s |%n",
-                "ID", "Title", "Year", "Artist ID");
-        System.out.println("+----+------------------------------+------+-----------+");
-
-        for (Artist artist : artistController.getAllArtist()) {
-
-            System.out.printf("| %-2d | %-28s | %-4d | %-9d |%n",
-                    artist.getId(),
-                    artist.getName());
-
-        }
-
-        System.out.println("+----+------------------------------+------+-----------+");
 
     }
 
     private void updateArtist() {
 
-        System.out.print("Enter Album ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        while (true) {
 
-        Artist artist = artistController.checkArtistId(id);
+            System.out.println("=== UPDATE ===");
+            System.out.println("1. UPDATE AN ARTIST");
+            System.out.println("2. BACK");
+            System.out.print("Choose an option: ");
 
-        if (artist == null) {
-            System.out.println("Album not found.");
-            return;
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+                continue;
+            }
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
+                case 1:
+
+                    int id;
+
+                    while (true) {
+
+                        System.out.print("Enter Artist ID: ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Artist ID must be a number.");
+                            scanner.nextLine();
+                            continue;
+                        }
+
+                        id = scanner.nextInt();
+                        scanner.nextLine();
+
+                        Artist artist = artistController.checkArtistId(id);
+
+                        if (artist != null) {
+                            break;
+                        }
+
+                        System.out.println("Artist does not exist.");
+                    }
+
+                    String name;
+
+                    while (true) {
+
+                        System.out.print("New Artist Name: ");
+                        name = scanner.nextLine().trim();
+
+                        if (!name.isEmpty()) {
+                            break;
+                        }
+
+                        System.out.println("Artist name cannot be empty.");
+                    }
+
+                    Artist updated = new Artist(id, name);
+
+                    if (artistController.updateArtist(updated)) {
+                        System.out.println("Artist updated successfully!");
+                    } else {
+                        System.out.println("Failed to update artist.");
+                    }
+
+                    System.out.println("Press Enter to continue...");
+                    scanner.nextLine();
+                    break;
+
+                case 2:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input!");
+            }
         }
-
-        System.out.print("New Artist Name: ");
-        String name = scanner.nextLine();
-
-        Artist updated = new Artist(name);
-
-        if (artistController.updateArtist(updated)) {
-            System.out.println("Album updated successfully.");
-        } else {
-            System.out.println("Failed to update album.");
-        }
-
     }
 
     private void deleteArtist() {
 
-        System.out.print("Enter Album ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        while (true) {
 
-        Artist artist = artistController.checkArtistId(id);
+            System.out.println("=== DELETE ===");
+            System.out.println("1. DELETE AN ARTIST");
+            System.out.println("2. BACK");
+            System.out.print("Choose an option: ");
 
-        if (artist == null) {
-            System.out.println("Album not found.");
-            return;
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+                continue;
+            }
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
+                case 1:
+
+                    System.out.print("Enter Artist ID: ");
+
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("Artist ID must be a number.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Artist artist = artistController.checkArtistId(id);
+
+                    if (artist == null) {
+                        System.out.println("Artist does not exist.");
+                        break;
+                    }
+
+                    while (true) {
+
+                        System.out.print("Are you sure? (YES/NO): ");
+                        String confirm = scanner.nextLine().trim().toUpperCase();
+
+                        switch (confirm) {
+
+                            case "YES":
+
+                                if (artistController.deleteArtist(id)) {
+                                    System.out.println("Artist deleted successfully.");
+                                } else {
+                                    System.out.println("Failed to delete artist.");
+                                }
+
+                                break;
+
+                            case "NO":
+                                System.out.println("Delete cancelled.");
+                                break;
+
+                            default:
+                                System.out.println("Please enter YES or NO.");
+                                continue;
+                        }
+
+                        break;
+                    }
+
+                    break;
+
+                case 2:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input!");
+            }
+
+            System.out.println("Press Enter to continue...");
+            scanner.nextLine();
         }
-
-        if (artistController.deleteArtist(id)) {
-            System.out.println("Album deleted successfully.");
-        } else {
-            System.out.println("Failed to delete album.");
-        }
-
     }
 }

@@ -5,7 +5,9 @@
 package com.joysistvi.recordingapp.adminview;
 
 import com.joysistvi.recordingapp.controller.AlbumController;
+import com.joysistvi.recordingapp.controller.ArtistController;
 import com.joysistvi.recordingapp.model.Album;
+import com.joysistvi.recordingapp.model.Artist;
 
 import static com.joysistvi.recordingapp.utils.ClearScreen.clearScreen;
 import static com.joysistvi.recordingapp.utils.Scan.scanner;
@@ -13,9 +15,11 @@ import static com.joysistvi.recordingapp.utils.Scan.scanner;
 public class AlbumView {
 
     private final AlbumController albumController;
+    private final ArtistController artistController;
 
-    public AlbumView(AlbumController albumController) {
+    public AlbumView(AlbumController albumController, ArtistController artistController) {
         this.albumController = albumController;
+        this.artistController = artistController;
     }
 
     public void dashboard() {
@@ -29,8 +33,7 @@ public class AlbumView {
             System.out.println("2. View Albums");
             System.out.println("3. Update Album");
             System.out.println("4. Delete Album");
-            System.out.println("5. Truncate Albums");
-            System.out.println("0. Back");
+            System.out.println("5. Back");
             System.out.print("Choose: ");
 
             if (!scanner.hasNextInt()) {
@@ -61,10 +64,6 @@ public class AlbumView {
                     break;
 
                 case 5:
-                    truncateAlbum();
-                    break;
-
-                case 0:
                     return;
 
                 default:
@@ -77,123 +76,372 @@ public class AlbumView {
     }
 
     private void addAlbum() {
+        while (true) {
 
-        System.out.print("Album Title: ");
-        String title = scanner.nextLine();
+            System.out.println("=== ADD ALBUM ===");
+            System.out.println("1. ADD ALBUM");
+            System.out.println("2. BACK");
+            System.out.print("Choose an option: ");
 
-        System.out.print("Album Year: ");
-        int year = scanner.nextInt();
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+                continue;
+            }
 
-        System.out.print("Artist ID: ");
-        int artistId = scanner.nextInt();
-        scanner.nextLine();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        Album album = new Album(title, year, artistId);
+            switch (choice) {
 
-        if (albumController.createAlbum(album)) {
-            System.out.println("Album added successfully.");
-        } else {
-            System.out.println("Failed to add album.");
+                case 1:
+
+                    String title;
+
+                    while (true) {
+                        System.out.print("Album Title: ");
+                        title = scanner.nextLine().trim();
+
+                        if (!title.isEmpty()) {
+                            break;
+                        }
+
+                        System.out.println("Album title cannot be empty.");
+                    }
+
+                    int year;
+
+                    while (true) {
+
+                        System.out.print("Album Year: ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Year must be a number.");
+                            scanner.nextLine();
+                            continue;
+                        }
+
+                        year = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (year < 1900 || year > 2100) {
+                            System.out.println("Invalid year.");
+                            continue;
+                        }
+
+                        break;
+                    }
+
+                    int artistId;
+
+                    while (true) {
+
+                        System.out.print("Artist ID: ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Artist ID must be a number.");
+                            scanner.nextLine();
+                            continue;
+                        }
+
+                        artistId = scanner.nextInt();
+                        scanner.nextLine();
+
+                        Artist artist = artistController.checkArtistId(artistId);
+
+                        if (artist != null) {
+                            break;
+                        }
+
+                        System.out.println("Artist does not exist.");
+                    }
+
+                    Album album = new Album(year, title, artistId, artistId);
+
+                    if (albumController.createAlbum(album)) {
+                        System.out.println("Album added successfully!");
+                    } else {
+                        System.out.println("Failed to add album.");
+                    }
+
+                    System.out.println("Press Enter to continue...");
+                    scanner.nextLine();
+                    break;
+
+                case 2:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input!");
+            }
         }
-
     }
 
-    void viewAlbums() {
+    public void viewAlbums() {
 
-        if (albumController.listAlbums().isEmpty()) {
-            System.out.println("No albums found.");
-            return;
+        while (true) {
+
+            System.out.println("=== VIEW ===");
+            System.out.println("1. VIEW ALL ALBUMS");
+            System.out.println("2. VIEW SPECIFIC ALBUM");
+            System.out.println("3. BACK");
+            System.out.print("Choose an option: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+                continue;
+            }
+
+            int view = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (view) {
+
+                case 1:
+
+                    if (albumController.listAlbums().isEmpty()) {
+                        System.out.println("No albums found.");
+                        break;
+                    }
+
+                    System.out.println("+----+------------------------------+------+--------------------------+");
+                    System.out.printf("| %-2s | %-28s | %-4s | %-24s |%n",
+                            "ID", "Album", "Year", "Artist");
+                    System.out.println("+----+------------------------------+------+--------------------------+");
+
+                    for (Album album : albumController.listAlbums()) {
+
+                        System.out.printf("| %-2d | %-28s | %-4d | %-24s |%n",
+                                album.getId(),
+                                album.getTitle(),
+                                album.getYear(),
+                                album.getArtistName());
+                    }
+
+                    System.out.println("+----+------------------------------+------+--------------------------+");
+
+                    break;
+
+                case 2:
+
+                    System.out.print("Enter Album ID: ");
+
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("NUMBER ONLY!");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Album album = albumController.checkAlbumId(id);
+
+                    if (album == null) {
+                        System.out.println("Album does not exist.");
+                    } else {
+
+                        System.out.println("Artist : " + album.getArtistName());
+                        System.out.println();
+
+                        System.out.printf("%-5s %-30s %-10s%n",
+                                "ID", "Album", "Year");
+
+                        System.out.println("-----------------------------------------------");
+
+                        System.out.printf("%-5d %-30s %-10d%n",
+                                album.getId(),
+                                album.getTitle(),
+                                album.getYear());
+                    }
+
+                    break;
+
+                case 3:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input!");
+            }
+
+            System.out.println("Press Enter to continue...");
+            scanner.nextLine();
         }
-
-        System.out.println("+----+------------------------------+------+-----------+");
-        System.out.printf("| %-2s | %-28s | %-4s | %-9s |%n",
-                "ID", "Title", "Year", "Artist ID");
-        System.out.println("+----+------------------------------+------+-----------+");
-
-        for (Album album : albumController.listAlbums()) {
-
-            System.out.printf("| %-2d | %-28s | %-4d | %-9d |%n",
-                    album.getId(),
-                    album.getTitle(),
-                    album.getYear(),
-                    album.getArtist_id());
-
-        }
-
-        System.out.println("+----+------------------------------+------+-----------+");
 
     }
 
     private void updateAlbum() {
 
-        System.out.print("Enter Album ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        while (true) {
 
-        Album album = albumController.checkAlbumId(id);
+            System.out.println("=== UPDATE ===");
+            System.out.println("1. UPDATE AN ALBUM");
+            System.out.println("2. BACK");
+            System.out.print("Choose an option: ");
 
-        if (album == null) {
-            System.out.println("Album not found.");
-            return;
-        }
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+                continue;
+            }
 
-        System.out.print("New Title: ");
-        String title = scanner.nextLine();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        System.out.print("New Year: ");
-        int year = scanner.nextInt();
+            switch (choice) {
 
-        System.out.print("New Artist ID: ");
-        int artistId = scanner.nextInt();
-        scanner.nextLine();
+                case 1:
 
-        Album updated = new Album(title, id, year);
+                    int id;
 
-        if (albumController.updateAlbum(updated)) {
-            System.out.println("Album updated successfully.");
-        } else {
-            System.out.println("Failed to update album.");
+                    while (true) {
+
+                        System.out.print("Enter Album ID: ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Album ID must be a number.");
+                            scanner.nextLine();
+                            continue;
+                        }
+
+                        id = scanner.nextInt();
+                        scanner.nextLine();
+
+                        Album album = albumController.checkAlbumId(id);
+
+                        if (album != null) {
+                            break;
+                        }
+
+                        System.out.println("Album does not exist.");
+                    }
+
+                    String title;
+
+                    while (true) {
+
+                        System.out.print("New Title: ");
+                        title = scanner.nextLine().trim();
+
+                        if (!title.isEmpty()) {
+                            break;
+                        }
+
+                        System.out.println("Title cannot be empty.");
+                    }
+
+                    int year;
+
+                    while (true) {
+
+                        System.out.print("New Year: ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Year must be a number.");
+                            scanner.nextLine();
+                            continue;
+                        }
+
+                        year = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (year < 1900 || year > 2100) {
+                            System.out.println("Invalid year.");
+                            continue;
+                        }
+
+                        break;
+                    }
+
+
+                    Album updated = new Album(id, title, year);
+
+                    if (albumController.updateAlbum(updated)) {
+                        System.out.println("Album updated successfully!");
+                    } else {
+                        System.out.println("Failed to update album.");
+                    }
+
+                    System.out.println("Press Enter to continue...");
+                    scanner.nextLine();
+                    break;
+
+                case 2:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input!");
+            }
         }
 
     }
 
     private void deleteAlbum() {
+        while (true) {
 
-        System.out.print("Enter Album ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+            System.out.println("=== DELETE ===");
+            System.out.println("1. DELETE AN ALBUM");
+            System.out.println("2. BACK");
+            System.out.print("Choose an option: ");
 
-        Album album = albumController.checkAlbumId(id);
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+                continue;
+            }
 
-        if (album == null) {
-            System.out.println("Album not found.");
-            return;
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
+                case 1:
+
+                    System.out.print("Enter Album ID: ");
+
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("NUMBER ONLY!");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Album album = albumController.checkAlbumId(id);
+
+                    if (album == null) {
+                        System.out.println("Album does not exist.");
+                        break;
+                    }
+
+                    System.out.print("Are you sure? (YES/NO): ");
+                    String confirm = scanner.nextLine();
+
+                    if (confirm.equalsIgnoreCase("YES")) {
+
+                        if (albumController.deleteAlbum(id)) {
+                            System.out.println("Album deleted successfully.");
+                        } else {
+                            System.out.println("Failed to delete album.");
+                        }
+
+                    } else {
+                        System.out.println("Delete cancelled.");
+                    }
+
+                    break;
+
+                case 2:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input!");
+            }
+
+            System.out.println("Press Enter to continue...");
+            scanner.nextLine();
         }
-
-        if (albumController.deleteAlbum(id)) {
-            System.out.println("Album deleted successfully.");
-        } else {
-            System.out.println("Failed to delete album.");
-        }
-
     }
-
-    private void truncateAlbum() {
-
-        System.out.print("Are you sure? (YES/NO): ");
-        String answer = scanner.nextLine();
-
-        if (!answer.equalsIgnoreCase("YES")) {
-            System.out.println("Cancelled.");
-            return;
-        }
-
-        if (albumController.truncateAlbum()) {
-            System.out.println("Albums table truncated.");
-        } else {
-            System.out.println("Failed.");
-        }
-
-    }
-
 }
