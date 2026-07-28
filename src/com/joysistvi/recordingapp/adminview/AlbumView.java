@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.joysistvi.recordingapp.view;
+package com.joysistvi.recordingapp.adminview;
 
 import com.joysistvi.recordingapp.controller.AlbumController;
 import com.joysistvi.recordingapp.model.Album;

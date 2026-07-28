@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.joysistvi.recordingapp.view;
+package com.joysistvi.recordingapp.adminview;
 
 import com.joysistvi.recordingapp.controller.SongController;
 import com.joysistvi.recordingapp.model.Song;
@@ -24,7 +24,7 @@ public class SongView {
 
         while (running) {
             clearScreen();
-            System.out.println("\n=== Admin Dashboard ===");
+            System.out.println("\n=== Song Menu ===");
             System.out.println("1. Add Song");
             System.out.println("2. View Song");
             System.out.println("3. Update Song");

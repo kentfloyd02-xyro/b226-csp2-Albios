@@ -16,6 +16,10 @@ public class Artist {
         this.id = id;
         this.name = name;
     }
+    
+    public Artist(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArtistRepoImpl implements ArtistRepo {
-    
+
     private final dbconnection db = new dbconnection();
 
     @Override
@@ -26,17 +26,15 @@ public class ArtistRepoImpl implements ArtistRepo {
         String sql = "SELECT * FROM artits";
 
         try (
-                Connection conn = db.connect();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
 
                 Artist artist = new Artist(
                         rs.getInt("artits_id"),
-                        rs.getString("artits_name")     
+                        rs.getString("artits_name")
                 );
-                
+
             }
 
         } catch (Exception e) {
@@ -45,15 +43,14 @@ public class ArtistRepoImpl implements ArtistRepo {
 
         return artists;
     }
-    
+
     @Override
     public boolean createArtist(Artist artist) {
 
-        String query = "INSERT INTO artist(artist_name) VALUES(?)";
+        String query = "INSERT INTO artists (artist_name) VALUES(?)";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setString(1, artist.getName());
 
@@ -65,15 +62,14 @@ public class ArtistRepoImpl implements ArtistRepo {
 
         return false;
     }
-    
+
     @Override
     public boolean updateArtist(Artist artist) {
 
         String query = "UPDATE artists SET artist_name = ? WHERE artist_id";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setString(1, artist.getName());
 
@@ -85,15 +81,14 @@ public class ArtistRepoImpl implements ArtistRepo {
 
         return false;
     }
-    
+
     @Override
     public boolean deleteArtist(int id) {
 
         String query = "DELETE FROM artists WHERE artist_id=?";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
 
@@ -105,26 +100,25 @@ public class ArtistRepoImpl implements ArtistRepo {
 
         return false;
     }
-    
+
     @Override
     public Artist checkArtistId(int id) {
-        String query = "SELECT artist_id, artist_name WHERE artist_id = ?";
+        String query = "SELECT * FROM artists WHERE artist_id=?";
 
         try (Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
-            
+
             ResultSet result = prep.executeQuery();
 
             if (result.next()) {
 
-            return new Artist(
-                    result.getInt("artist_id"),
-                    result.getString("artist_name")
-                    
-            );
-        }
-            
+                return new Artist(
+                        result.getInt("artist_id"),
+                        result.getString("artist_name")
+                );
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -10,6 +10,7 @@ public class User {
     private String username;
     private String password;
     private String role;
+    private int playlist_id;
 
     public User(int id, String username, String password, String role) {
         this.id = id;
@@ -22,6 +23,13 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+    
+    public User(int id, String username, String role, int playlist_id) {
+        this.id = id;
+        this.username = username;
+        this.role = role;
+        this.playlist_id = playlist_id;
     }
     
     public User(String role){
@@ -43,7 +51,11 @@ public class User {
     public String getRole() {
         return role;
     }
-
+    
+    public int getPlaylistID() {
+        return playlist_id;
+    }
+    
     public void setId(int id) {
         this.id = id;
     }
@@ -58,5 +70,9 @@ public class User {
     
     public void setRole(String role) {
         this.role = role;
+    }
+    
+    public void setPlaylistId(int playlist_id){
+        this.playlist_id = playlist_id;
     }
 }

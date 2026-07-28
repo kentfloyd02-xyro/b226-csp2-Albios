@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package com.joysistvi.recordingapp.repository;
 
 import com.joysistvi.recordingapp.config.dbconnection;
@@ -24,14 +23,12 @@ public class PlaylistRepoImpl implements PlaylistRepo {
         String sql = "SELECT * FROM playlists";
 
         try (
-                Connection conn = db.connect();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
 
                 Playlist playlist = new Playlist(
-                                                rs.getString("created_at"),
+                        rs.getString("created_at"),
                         rs.getInt("playlist_id")
                 );
 
@@ -51,8 +48,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
         String query = "INSERT INTO playlists(created_at,song_id) VALUES(?,?)";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setString(1, playlist.getCreated_at());
             prep.setInt(2, playlist.getSong_id());
@@ -72,8 +68,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
         String query = "UPDATE playlists SET created_at=?, song_id=? WHERE playlist_id=?";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setString(1, playlist.getCreated_at());
             prep.setInt(2, playlist.getSong_id());
@@ -94,8 +89,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
         String query = "DELETE FROM playlists WHERE playlist_id=?";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
 
@@ -114,8 +108,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
         String query = "SELECT * FROM playlists WHERE playlist_id=?";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
 
@@ -124,7 +117,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
             if (rs.next()) {
 
                 return new Playlist(
-                                                rs.getString("created_at"),
+                        rs.getString("created_at"),
                         rs.getInt("playlist_id")
                 );
             }
@@ -142,8 +135,7 @@ public class PlaylistRepoImpl implements PlaylistRepo {
         String query = "TRUNCATE TABLE playlists";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.executeUpdate();
             return true;

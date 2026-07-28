@@ -6,6 +6,7 @@ package com.joysistvi.recordingapp.controller;
 
 import com.joysistvi.recordingapp.model.User;
 import com.joysistvi.recordingapp.service.UserService;
+import java.util.List;
 
 public class UserController {
 
@@ -18,5 +19,20 @@ public class UserController {
     public boolean register(User user) {
         return service.register(user);
     }
-    
+
+    public List<User> getAllUser() {
+        return service.getAllUser();
+    }
+
+    public User checkUserId(int id) {
+        return service.checkUserId(id);
+    }
+
+    public boolean updateUser(User user) {
+        return service.updateUser(user);
+    }
+
+    public boolean deleteUser(int id) {
+        return service.deleteUser(id);
+    }
 }

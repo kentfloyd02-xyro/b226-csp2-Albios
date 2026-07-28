@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.joysistvi.recordingapp.view;
+package com.joysistvi.recordingapp.main;
 
 import com.joysistvi.recordingapp.config.dbconnection;
 import com.joysistvi.recordingapp.controller.SongController;
 import com.joysistvi.recordingapp.controller.UserController;
 import com.joysistvi.recordingapp.model.User;
+import com.joysistvi.recordingapp.view.dashboard.AdminDB;
+import com.joysistvi.recordingapp.main.LoginView;
+import com.joysistvi.recordingapp.main.RegisterView;
+import com.joysistvi.recordingapp.view.UserDB;
 import java.util.Scanner;
 
 public class Main {

@@ -4,6 +4,10 @@
  */
 package com.joysistvi.recordingapp.view;
 
+import com.joysistvi.recordingapp.adminview.PlaylistView;
+import com.joysistvi.recordingapp.adminview.SongView;
+import com.joysistvi.recordingapp.adminview.UserView;
+import com.joysistvi.recordingapp.adminview.AlbumView;
 import com.joysistvi.recordingapp.controller.AlbumController;
 import com.joysistvi.recordingapp.controller.PlaylistController;
 import com.joysistvi.recordingapp.controller.SongController;
@@ -84,7 +88,7 @@ public class UserDB {
                     break;
 
                 case 6:
-                    userView.updateProfile();
+                    userView.dashboard();
                     break;
 
                 case 0:

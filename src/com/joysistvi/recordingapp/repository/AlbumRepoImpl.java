@@ -26,14 +26,12 @@ public class AlbumRepoImpl implements AlbumRepo {
         String sql = "SELECT * FROM albums";
 
         try (
-                Connection conn = db.connect();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
 
                 Album album = new Album(
-                                                rs.getString("album_title"), rs.getInt("album_id"),
+                        rs.getString("album_title"), rs.getInt("album_id"),
                         rs.getInt("album_year"));
 
                 albums.add(album);
@@ -52,8 +50,7 @@ public class AlbumRepoImpl implements AlbumRepo {
         String query = "INSERT INTO albums(album_title, album_year, artist_id) VALUES(?,?,?)";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setString(1, album.getTitle());
             prep.setInt(2, album.getYear());
@@ -74,8 +71,7 @@ public class AlbumRepoImpl implements AlbumRepo {
         String query = "UPDATE albums SET album_title=?, album_year=?, artist_id=? WHERE album_id=?";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setString(1, album.getTitle());
             prep.setInt(2, album.getYear());
@@ -97,8 +93,7 @@ public class AlbumRepoImpl implements AlbumRepo {
         String query = "DELETE FROM albums WHERE album_id=?";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
 
@@ -117,8 +112,7 @@ public class AlbumRepoImpl implements AlbumRepo {
         String query = "SELECT * FROM albums WHERE album_id=?";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.setInt(1, id);
 
@@ -127,7 +121,7 @@ public class AlbumRepoImpl implements AlbumRepo {
             if (rs.next()) {
 
                 return new Album(
-                                                rs.getString("album_title"), rs.getInt("album_id"),
+                        rs.getString("album_title"), rs.getInt("album_id"),
                         rs.getInt("album_year"));
 
             }
@@ -145,8 +139,7 @@ public class AlbumRepoImpl implements AlbumRepo {
         String query = "TRUNCATE TABLE albums";
 
         try (
-                Connection conn = db.connect();
-                PreparedStatement prep = conn.prepareStatement(query)) {
+                Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
 
             prep.executeUpdate();
             return true;
