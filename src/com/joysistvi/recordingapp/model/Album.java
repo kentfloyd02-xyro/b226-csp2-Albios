@@ -18,6 +18,14 @@ public class Album {
 
     public Album() {
     }
+    
+    public Album(int id, String title, int year, int artistId, String artistName) {
+        this.id = id;
+        this.title = title;
+        this.year = year;
+        this.artist_id = artistId;
+        this.artistName = artistName;
+    }
 
     public Album(int id, String title, int year, int artistId) {
         this.id = id;

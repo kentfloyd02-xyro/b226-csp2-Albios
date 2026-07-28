@@ -4,29 +4,27 @@
  */
 package com.joysistvi.recordingapp.model;
 
-/**
- *
- * @author ktagl
- */
 public class Playlist {
 
     private int id;
-    private String created_at;
-    private int song_id;
-    private String songTitle;
+    private String playlistName;
+    private String createdAt;
+    private int userId;
 
     public Playlist() {
     }
 
-    public Playlist(int id, String created_at, int song_id) {
-        this.id = id;
-        this.created_at = created_at;
-        this.song_id = song_id;
+    public Playlist(String playlistName, String createdAt, int userId) {
+        this.playlistName = playlistName;
+        this.createdAt = createdAt;
+        this.userId = userId;
     }
 
-    public Playlist(String created_at, int song_id) {
-        this.created_at = created_at;
-        this.song_id = song_id;
+    public Playlist(int id, String playlistName, String createdAt, int userId) {
+        this.id = id;
+        this.playlistName = playlistName;
+        this.createdAt = createdAt;
+        this.userId = userId;
     }
 
     public int getId() {
@@ -37,27 +35,27 @@ public class Playlist {
         this.id = id;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getPlaylistName() {
+        return playlistName;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setPlaylistName(String playlistName) {
+        this.playlistName = playlistName;
     }
 
-    public int getSong_id() {
-        return song_id;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setSong_id(int song_id) {
-        this.song_id = song_id;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getSongTitle() {
-        return songTitle;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setSongTitle(String songTitle) {
-        this.songTitle = songTitle;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

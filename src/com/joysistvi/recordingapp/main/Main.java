@@ -56,7 +56,7 @@ public class Main {
                             adminDB.adminMenu();
                         } else {
                             UserDB userDB = new UserDB();
-                            userDB.userMenu();
+                            userDB.dashboard();
                         }
 
                     }

@@ -5,6 +5,7 @@
 package com.joysistvi.recordingapp.repository;
 
 import com.joysistvi.recordingapp.model.Playlist;
+import com.joysistvi.recordingapp.model.PlaylistSong;
 import java.util.List;
 
 public interface PlaylistRepo {
@@ -14,9 +15,17 @@ public interface PlaylistRepo {
     Playlist checkPlaylistId(int id);
 
     boolean createPlaylist(Playlist playlist);
-
-    boolean updatePlaylist(Playlist playlist);
+    
+    public boolean updatePlaylist(Playlist playlist);
 
     boolean deletePlaylist(int id);
+
+    boolean addSongToPlaylist(int playlistId, int songId);
+
+    boolean removeSongFromPlaylist(int playlistId, int songId);
+
+    boolean songAlreadyExists(int playlistId, int songId);
+
+    List<PlaylistSong> getSongsInPlaylist(int playlistId);
 
 }

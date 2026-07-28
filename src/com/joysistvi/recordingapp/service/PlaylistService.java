@@ -5,8 +5,10 @@
 package com.joysistvi.recordingapp.service;
 
 import com.joysistvi.recordingapp.model.Playlist;
+import com.joysistvi.recordingapp.model.PlaylistSong;
 import com.joysistvi.recordingapp.repository.PlaylistRepo;
 import com.joysistvi.recordingapp.repository.PlaylistRepoImpl;
+
 import java.util.List;
 
 public class PlaylistService {
@@ -29,11 +31,24 @@ public class PlaylistService {
         return playlistRepo.createPlaylist(playlist);
     }
 
-    public boolean updatePlaylist(Playlist playlist) {
-        return playlistRepo.updatePlaylist(playlist);
-    }
-
     public boolean deletePlaylist(int id) {
         return playlistRepo.deletePlaylist(id);
     }
+
+    public boolean addSongToPlaylist(int playlistId, int songId) {
+        return playlistRepo.addSongToPlaylist(playlistId, songId);
+    }
+
+    public boolean removeSongFromPlaylist(int playlistId, int songId) {
+        return playlistRepo.removeSongFromPlaylist(playlistId, songId);
+    }
+
+    public boolean songAlreadyExists(int playlistId, int songId) {
+        return playlistRepo.songAlreadyExists(playlistId, songId);
+    }
+
+    public List<PlaylistSong> getSongsInPlaylist(int playlistId) {
+        return playlistRepo.getSongsInPlaylist(playlistId);
+    }
+
 }

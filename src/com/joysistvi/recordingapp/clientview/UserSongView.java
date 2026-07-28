@@ -1,0 +1,117 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.joysistvi.recordingapp.clientview;
+
+import com.joysistvi.recordingapp.controller.SongController;
+import com.joysistvi.recordingapp.model.Song;
+import static com.joysistvi.recordingapp.utils.Scan.scanner;
+
+/**
+ *
+ * @author ktagl
+ */
+public class UserSongView {
+    
+    private final SongController songController;
+    
+    public UserSongView(SongController songController){
+        this.songController = songController ;
+    }
+
+    public void dashboard() {
+        while (true) {
+            System.out.println("=== VIEW ===");
+            System.out.println("1. VIEW ALL SONG");
+            System.out.println("2. VIEW SPECIFIC COLUMN SONG");
+            System.out.println("3. BACK");
+            System.out.print("Choose an option: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("NUMBER ONLY!");
+                scanner.nextLine();
+                continue;
+            }
+
+            int view = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (view) {
+                case 1:
+
+                    if (songController.listSongs().isEmpty()) {
+                        System.out.println("No songs found.");
+                        break;
+                    }
+
+                    int currentAlbumId = -1;
+
+                    for (Song song : songController.listSongs()) {
+
+                        if (song.getAlbum_id() != currentAlbumId) {
+
+                            currentAlbumId = song.getAlbum_id();
+
+                            System.out.println();
+                            System.out.println("============================================================");
+                            System.out.println("Album : " + song.getAlbumName());
+                            System.out.println("Artist: " + song.getArtistName());
+                            System.out.println("============================================================");
+
+                            System.out.printf("%-5s %-30s %-15s %-10s%n",
+                                    "ID", "Title", "Genre", "Length");
+
+                            System.out.println("------------------------------------------------------------");
+                        }
+
+                        if (song.getId() == 0) {
+                            continue;
+                        }
+
+                        System.out.printf("%-5d %-30s %-15s %-10s%n",
+                                song.getId(),
+                                song.getTitle(),
+                                song.getGenre(),
+                                song.getLength());
+                    }
+
+                    break;
+                case 2:
+                    System.out.print("Enter Song ID: ");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Song song = songController.checkSongId(id);
+
+                    if (song == null) {
+                        System.out.println("Song does not exist.");
+                    } else {
+                        System.out.println("Album : " + song.getAlbumName());
+                        System.out.println("Artist: " + song.getArtistName());
+                        System.out.println();
+
+                        System.out.printf("%-5s %-30s %-15s %-10s%n",
+                                "ID", "Title", "Genre", "Length");
+
+                        System.out.println("--------------------------------------------------");
+
+                        System.out.printf("%-5d %-30s %-15s %-10s%n",
+                                song.getId(),
+                                song.getTitle(),
+                                song.getGenre(),
+                                song.getLength());
+                    }
+                    break;
+
+                case 3:
+                    return;
+
+                default:
+                    System.out.println("Invalid Input!");
+            }
+            System.out.println("Press Enter to continue...");
+            scanner.nextLine();
+        }
+    }
+}

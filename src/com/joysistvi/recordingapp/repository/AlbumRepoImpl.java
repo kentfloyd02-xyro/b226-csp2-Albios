@@ -23,18 +23,23 @@ public class AlbumRepoImpl implements AlbumRepo {
 
         List<Album> albums = new ArrayList<>();
 
-        String sql = "SELECT * FROM albums";
+        String query = "SELECT a.album_id, a.album_title, a.album_year, a.artist_id, ar.artist_name "
+                + "FROM albums a "
+                + "JOIN artists ar ON a.artist_id = ar.artist_id "
+                + "ORDER BY a.album_id";
 
         try (
-                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                Connection conn = db.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
 
-                Album album = new Album(
-                        rs.getInt("album_id"),
-                        rs.getString("album_title"),
-                        rs.getInt("album_year"), 
-                        rs.getInt("artist_id"));
+                Album album = new Album();
+
+                album.setId(rs.getInt("album_id"));
+                album.setTitle(rs.getString("album_title"));
+                album.setYear(rs.getInt("album_year"));
+                album.setArtist_id(rs.getInt("artist_id"));
+                album.setArtistName(rs.getString("artist_name"));
 
                 albums.add(album);
             }
@@ -111,7 +116,10 @@ public class AlbumRepoImpl implements AlbumRepo {
     @Override
     public Album checkAlbumId(int id) {
 
-        String query = "SELECT * FROM albums WHERE album_id=?";
+        String query = "SELECT a.album_id, a.album_title, a.album_year, a.artist_id, ar.artist_name "
+                + "FROM albums a "
+                + "JOIN artists ar ON a.artist_id = ar.artist_id "
+                + "WHERE a.album_id = ?";
 
         try (
                 Connection conn = db.connect(); PreparedStatement prep = conn.prepareStatement(query)) {
@@ -121,13 +129,15 @@ public class AlbumRepoImpl implements AlbumRepo {
             ResultSet rs = prep.executeQuery();
 
             if (rs.next()) {
-
-                return new Album(
+                Album album = new Album(
                         rs.getInt("album_id"),
                         rs.getString("album_title"),
                         rs.getInt("album_year"),
-                        rs.getInt("artist_id"));
+                        rs.getInt("artist_id")
+                );
 
+                album.setArtistName(rs.getString("artist_name"));
+                return album;
             }
 
         } catch (Exception e) {

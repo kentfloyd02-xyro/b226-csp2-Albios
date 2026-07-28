@@ -5,7 +5,9 @@
 package com.joysistvi.recordingapp.controller;
 
 import com.joysistvi.recordingapp.model.Playlist;
+import com.joysistvi.recordingapp.model.PlaylistSong;
 import com.joysistvi.recordingapp.service.PlaylistService;
+
 import java.util.List;
 
 public class PlaylistController {
@@ -28,11 +30,24 @@ public class PlaylistController {
         return playlistService.createPlaylist(playlist);
     }
 
-    public boolean updatePlaylist(Playlist playlist) {
-        return playlistService.updatePlaylist(playlist);
-    }
-
     public boolean deletePlaylist(int id) {
         return playlistService.deletePlaylist(id);
     }
+
+    public boolean addSongToPlaylist(int playlistId, int songId) {
+        return playlistService.addSongToPlaylist(playlistId, songId);
+    }
+
+    public boolean removeSongFromPlaylist(int playlistId, int songId) {
+        return playlistService.removeSongFromPlaylist(playlistId, songId);
+    }
+
+    public boolean songAlreadyExists(int playlistId, int songId) {
+        return playlistService.songAlreadyExists(playlistId, songId);
+    }
+
+    public List<PlaylistSong> getSongsInPlaylist(int playlistId) {
+        return playlistService.getSongsInPlaylist(playlistId);
+    }
+
 }

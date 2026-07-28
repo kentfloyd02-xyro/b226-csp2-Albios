@@ -4,79 +4,76 @@
  */
 package com.joysistvi.recordingapp.view.dashboard;
 
-import com.joysistvi.recordingapp.adminview.PlaylistView;
-import com.joysistvi.recordingapp.adminview.SongView;
-import com.joysistvi.recordingapp.adminview.UserView;
-import com.joysistvi.recordingapp.adminview.AlbumView;
+import com.joysistvi.recordingapp.clientview.UserAlbumView;
+import com.joysistvi.recordingapp.clientview.UserArtistView;
+import com.joysistvi.recordingapp.clientview.UserSongView;
+import com.joysistvi.recordingapp.clientview.PlaylistView;
+
 import com.joysistvi.recordingapp.controller.AlbumController;
+import com.joysistvi.recordingapp.controller.ArtistController;
 import com.joysistvi.recordingapp.controller.PlaylistController;
 import com.joysistvi.recordingapp.controller.SongController;
 import com.joysistvi.recordingapp.controller.UserController;
+
 import static com.joysistvi.recordingapp.utils.ClearScreen.clearScreen;
 import static com.joysistvi.recordingapp.utils.Scan.scanner;
 
-/**
- *
- * @author ktagl
- */
 public class UserDB {
 
-    private final SongView songView;
-    private final AlbumView albumView;
+    private final UserSongView songView;
+    private final UserAlbumView albumView;
+    private final UserArtistView artistView;
     private final PlaylistView playlistView;
-    private final UserView userView;
 
     public UserDB() {
 
         SongController songController = new SongController();
         AlbumController albumController = new AlbumController();
+        ArtistController artistController = new ArtistController();
         PlaylistController playlistController = new PlaylistController();
         UserController userController = new UserController();
 
-        songView = new SongView(songController, albumController);
-        albumView = new AlbumView(albumController, artistController);
-        playlistView = new PlaylistView(playlistController);
-        userView = new UserView(userController);
+        songView = new UserSongView(songController);
+        albumView = new UserAlbumView(albumController);
+        artistView = new UserArtistView(artistController);
+        playlistView = new PlaylistView(playlistController, songController, userController);
     }
 
-    public void userMenu() {
+    public void dashboard() {
 
-        boolean running = true;
+        while (true) {
 
-        while (running) {
             clearScreen();
-            System.out.println("\n=== User Dashboard ===");
-            System.out.println("1. View Songs");
-            System.out.println("2. Search Song");
-            System.out.println("3. View Albums");
-            System.out.println("4. Create Playlist");
-            System.out.println("5. View My Playlist");
-            System.out.println("6. Update Profile");
-            System.out.println("0. Logout");
-            System.out.print("Choose an option: ");
+
+            System.out.println("===== USER DASHBOARD =====");
+            System.out.println("1. Browse Songs");
+            System.out.println("2. Browse Albums");
+            System.out.println("3. Browse Artists");
+            System.out.println("4. My Playlists");
+            System.out.println("5. Logout");
+            System.out.print("Choice: ");
 
             if (!scanner.hasNextInt()) {
-                System.out.println("NUMBER ONLY, TRY AGAIN!");
-
+                System.out.println("NUMBER ONLY!");
                 scanner.nextLine();
                 continue;
             }
 
-            int input = scanner.nextInt();
+            int choice = scanner.nextInt();
             scanner.nextLine();
 
-            switch (input) {
+            switch (choice) {
 
                 case 1:
                     songView.dashboard();
                     break;
 
                 case 2:
-//                    songView.searchSong();
+                    albumView.dashboard();
                     break;
 
                 case 3:
-                    albumView.dashboard();
+                    artistView.dashboard();
                     break;
 
                 case 4:
@@ -84,22 +81,15 @@ public class UserDB {
                     break;
 
                 case 5:
-                    playlistView.dashboard();
-                    break;
-
-                case 6:
-                    userView.dashboard();
-                    break;
-
-                case 0:
-                    
-                    running = false;
                     System.out.println("Logging out...");
-                    break;
+                    System.exit(0);
 
                 default:
-                    System.out.println("Invalid option!");
+                    System.out.println("Invalid Input!");
             }
+
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
         }
     }
 }

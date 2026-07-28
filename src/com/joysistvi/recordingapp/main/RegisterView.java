@@ -54,7 +54,7 @@ public class RegisterView {
             System.out.println("Registration successful!");
 
             UserDB userDB = new UserDB();
-            userDB.userMenu();
+            userDB.dashboard();
 
         } else {
             System.out.println("Registration failed. Username may already exist.");
